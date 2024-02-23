@@ -57,10 +57,10 @@ body {
 .MuiDataGrid-cellCheckbox {
   max-width: 64px !important;
 }
-/* .MuiDataGrid-row {
-  max-height: 64px !important;
-  min-height: 64px !important;
-} */
+
+.MuiDataGrid-virtualScrollerContent {
+  height: 400px;
+}
 input[type="checkbox"] {
   /* appearance: none;
   -webkit-appearance: none;
@@ -131,4 +131,16 @@ input:checked + .slider:before {
 
 .slider.round:before {
   border-radius: 50%;
+}
+/*  */
+.custom-file-upload {
+  cursor: pointer;
+  display: inline-block;
+
+  transition: background-color 0.3s ease;
+}
+
+/* Input stilizatsiyasi */
+input[type="file"] {
+  display: none;
 }

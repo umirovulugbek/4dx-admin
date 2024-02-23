@@ -39,7 +39,7 @@ const Sidebar = () => {
   return (
     <div className="h-[100vh] justify-between p-[16px] border-r-[1px] border-r-[#F1F5F9]">
       <div className="logo mb-[23px] mt-4">
-        <img src="/image/logo.svg" alt="" />
+        <img src="/image/logo.png" alt="" />
       </div>
       <div className=" h-full flex flex-col justify-between">
         <div>
@@ -56,10 +56,10 @@ const Sidebar = () => {
           <div className="border-t-[1px] border-[#F1F5F9]">
             <div className="flex justify-between items-center ml-4 pt-6 mb-3 text-[12px]  text-[#94A3B8] font-bold">
               <div>PROJECTS</div>
-              <div className="h-[2px] w-[10px] bg-[#b0b0b0] "></div>
+              <div className="h-[2px] w-[10px] bg-[#b0b0b0] lg-flex  hidden"></div>
             </div>
             {projectItem.map((item, i) => (
-              <div key={i} className="flex flex-col ">
+              <div key={i} className="lg:flex flex-col  hidden">
                 <div className="h-[48px] px-4 items-center flex gap-4">
                   <span
                     style={{ backgroundColor: `${item?.color}` }}

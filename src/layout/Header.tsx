@@ -21,7 +21,7 @@ const Header = ({ label, filter = false, desc }: Props) => {
     <>
       <CreateModal />
       <div className="bg-white p-[20px]">
-        <div className=" flex flex-row justify-between items-center w-full ">
+        <div className="flex gap-2 flex-row flex-wrap justify-between items-center w-full ">
           <div>
             <div className="text-[#0F172A] text-[24px] font-bold">{label}</div>
             <div className="text-[12px] text-[#64748B]">{desc}</div>
@@ -40,7 +40,7 @@ const Header = ({ label, filter = false, desc }: Props) => {
                   className="border-[1.5px] border-[#F8FAFC]"
                   sx={{ height: 43, width: 43 }}
                 />
-                <div className="flex flex-col gap-[2px]">
+                <div className="lg:flex flex-col gap-[2px] hidden">
                   <b className="text-[14px] font-bold">Sam Smith</b>
                   <p className="text-[12px] text-[#64748B]">Project Manager</p>
                 </div>
@@ -49,7 +49,7 @@ const Header = ({ label, filter = false, desc }: Props) => {
           </div>
         </div>
         {filter === true ? (
-          <div className="mt-[24px] flex justify-between">
+          <div className="mt-[24px] lg:flex justify-between block">
             <div></div>
             <Button title={<> + New Project</>} onClick={onOpenCreateModal} />
           </div>

@@ -6,72 +6,125 @@ import { DataGrid, GridColDef } from "@mui/x-data-grid";
 
 import { IProduct } from "@/types/type";
 import axios from "axios";
-
-const columns: GridColDef[] = [
-  { field: "title", headerName: "Product Name", width: 340 },
-  {
-    field: `brand`,
-    headerName: "Brand",
-    width: 124,
-    valueGetter: (params) => params.row.brand.title,
-  },
-  {
-    field: "stock",
-    headerName: "Stock",
-    width: 124,
-    valueFormatter: (params) => {
-      const stock = params.value.toString(); // Qiymatni stringga o'girish
-      const formattedStock = stock.replace(/\B(?=(\d{3})+(?!\d))/g, ","); // Vergullarni qo'yish
-      return formattedStock;
-    },
-  },
-  {
-    field: "sales",
-    headerName: "Sales",
-    width: 124,
-    valueFormatter: (params) => {
-      const stock = params.value.toString(); // Qiymatni stringga o'girish
-      const formattedStock = stock.replace(/\B(?=(\d{3})+(?!\d))/g, "."); // Vergullarni qo'yish
-      return formattedStock;
-    },
-  },
-  {
-    field: "productPricings",
-    headerName: "Price",
-    width: 140,
-    valueGetter: (params) => `$${params.row.productPricings.price}`,
-  },
-  {
-    field: "status",
-    headerName: "Status",
-    width: 97,
-    renderCell: (params) => (
-      <label className="switch">
-        <input
-          type="checkbox"
-          checked={params.value}
-          onChange={(event) => {
-            // Checkbox qiymatini o'zgartirish
-            const newValue = !params.value;
-            // Qiymatni o'zgartirishni o'zgartirilgan qiymat bilan o'zgartiramiz
-            params.setValue(newValue);
-          }}
-        />
-        <span className="slider round"></span>
-      </label>
-    ),
-  },
-];
+import { Snackbar } from "@mui/material";
 
 const Product = () => {
+  const [loading, setLoading] = useState(false);
+  const columns: GridColDef[] = [
+    {
+      field: "title",
+      headerName: "Product Name",
+      width: 340,
+      renderCell: (params) => (
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <img
+            src={params.row.image}
+            alt=""
+            onError={(e) => {
+              e.target.src =
+                "https://www.svgindianmarket.com/images/thumbs/default-image_510.png";
+              // some replacement image
+            }}
+            // alt="Product"
+            style={{
+              width: 40,
+              height: 40,
+              marginRight: 16,
+              backgroundColor: "#F8FAFC",
+              borderRadius: "8px",
+              border: "0px",
+              padding: "10px",
+            }}
+          />
+          <span>{params.value}</span>
+        </div>
+      ),
+    },
+    {
+      field: `brand`,
+      headerName: "Brand",
+      width: 124,
+      valueGetter: (params) => params.row.brand.title,
+    },
+    {
+      field: "stock",
+      headerName: "Stock",
+      width: 124,
+      valueFormatter: (params) => {
+        const stock = params.value.toString(); // Qiymatni stringga o'girish
+        const formattedStock = stock.replace(/\B(?=(\d{3})+(?!\d))/g, ","); // Vergullarni qo'yish
+        return formattedStock;
+      },
+    },
+    {
+      field: "sales",
+      headerName: "Sales",
+      width: 124,
+      valueFormatter: (params) => {
+        const stock = params.value.toString(); // Qiymatni stringga o'girish
+        const formattedStock = stock.replace(/\B(?=(\d{3})+(?!\d))/g, "."); // Vergullarni qo'yish
+        return formattedStock;
+      },
+    },
+    {
+      field: "productPricings",
+      headerName: "Price",
+      width: 140,
+      valueGetter: (params) => `$${params.row.productPricings.price}`,
+    },
+    {
+      field: "status",
+      headerName: "Status",
+      width: 97,
+      renderCell: (params) => (
+        <label className="switch">
+          <input
+            type="checkbox"
+            checked={params.value}
+            onChange={(event) => {
+              // Checkbox qiymatini o'zgartirish
+              const newValue = !params.value;
+              // Qiymatni o'zgartirishni o'zgartirilgan qiymat bilan o'zgartiramiz
+              params.setValue(newValue);
+            }}
+          />
+          <span className="slider round"></span>
+        </label>
+      ),
+    },
+    {
+      field: `guid`,
+      headerName: "",
+      width: 100,
+      renderCell: (params) => (
+        <div
+          style={{ cursor: "pointer" }}
+          onClick={() => handleDelete(params.value)}
+        >
+          delete
+        </div>
+      ),
+    },
+  ];
   const [products, setProducts] = useState<IProduct[]>([]);
 
-  // const [checked, setChecked] = useState(true);
+  const handleDelete = async (id: { id: number }) => {
+    try {
+      setLoading(true);
+      await axios.delete(`https://test.olimjohn.uz/api/product-delete/${id}`);
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
 
-  // const handleChange = () => {
-  //   setChecked(!checked);
-  // };
-
+      <Snackbar
+        // open={open}
+        autoHideDuration={6000}
+        // onClose={handleClose}
+        message="Note archived"
+        // action={action}
+      />;
+    }
+  };
   const getProductList = async () => {
     try {
       const { data } = await axios.get(
@@ -87,70 +140,6 @@ const Product = () => {
     getProductList();
   }, []);
 
-  // const CustomCheckbox = React.forwardRef(
-  //   ({ checked }: { checked: boolean }, ref) => (
-  //     <span
-  //       style={{
-  //         cursor: "pointer",
-  //         display: "inline-block",
-  //         width: "20px",
-  //         height: "20px",
-  //         position: "relative",
-  //         backgroundColor: checked ? "#2563EB" : "transparent",
-  //         border: checked ? "1px solid #2563EB" : "1px solid #E2E8F0",
-  //         borderRadius: "4px",
-  //       }}
-  //     >
-  //       <input
-  //         type="checkbox"
-  //         style={{
-  //           opacity: 0,
-  //           width: "100%",
-  //           height: "100%",
-  //           position: "absolute",
-  //           top: 0,
-  //           left: 0,
-  //           cursor: "pointer",
-  //         }}
-  //         checked={checked}
-  //         // onChange={handleChange}
-  //       />
-  //       {checked ? (
-  //         <span
-  //           style={{
-  //             position: "absolute",
-  //             top: "50%",
-  //             left: "50%",
-  //             transform: "translate(-50%, -50%)",
-  //             color: "white",
-  //             fontWeight: "bold",
-  //           }}
-  //         >
-  //           <svg
-  //             width="10.341431"
-  //             height="7.559647"
-  //             viewBox="0 0 10.3414 7.55965"
-  //             fill="none"
-  //             xmlns="http://www.w3.org/2000/svg"
-  //             // xmlns:xlink="http://www.w3.org/1999/xlink"
-  //           >
-  //             <desc>Created with Pixso.</desc>
-  //             <defs />
-  //             <path
-  //               id="Vector"
-  //               d="M1.00403 3.78187L3.78186 6.55965L9.3374 1.00409"
-  //               stroke="#FFFFFF"
-  //               stroke-opacity="1.000000"
-  //               stroke-width="2.000000"
-  //               stroke-linejoin="round"
-  //               stroke-linecap="round"
-  //             />
-  //           </svg>
-  //         </span>
-  //       ) : null}
-  //     </span>
-  //   )
-  // );
   return (
     <Layout>
       <Header
@@ -158,6 +147,7 @@ const Product = () => {
         filter={true}
         desc="Detailed information about your products"
       />
+      {loading && <>Loading....</>}
       <div className="p-8">
         <div
           style={{
@@ -165,7 +155,7 @@ const Product = () => {
             fontWeight: "600",
             fontSize: "16px",
             height: "100%",
-            fontFamily: "Inter ,  sans-serif ",
+            fontFamily: "Inter,sans-serif",
           }}
           className="bg-white rounded-[16px]"
         >
@@ -174,6 +164,7 @@ const Product = () => {
             columns={columns.map((column) => ({
               ...column,
               headerClassName: "custom-header",
+              // field: "custom-field",
             }))}
             // components={{
             //   BaseCheckbox: CustomCheckbox,
@@ -190,7 +181,7 @@ const Product = () => {
             checkboxSelection // Checkbox ustunlarini ko'rsatish
             getCellClassName={(params) =>
               params.field !== "title"
-                ? "font-bold text-[16px] "
+                ? "font-bold text-[16px]"
                 : " font-bold text-[16px]"
             }
           />
