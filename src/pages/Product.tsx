@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Header from "../layout/Header";
 import Layout from "../layout/layout";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
@@ -20,11 +20,6 @@ const Product = () => {
           <img
             src={params.row.image}
             alt=""
-            onError={(e) => {
-              e.target.src =
-                "https://www.svgindianmarket.com/images/thumbs/default-image_510.png";
-              // some replacement image
-            }}
             // alt="Product"
             style={{
               width: 40,
@@ -78,16 +73,7 @@ const Product = () => {
       width: 97,
       renderCell: (params) => (
         <label className="switch">
-          <input
-            type="checkbox"
-            checked={params.value}
-            onChange={(event) => {
-              // Checkbox qiymatini o'zgartirish
-              const newValue = !params.value;
-              // Qiymatni o'zgartirishni o'zgartirilgan qiymat bilan o'zgartiramiz
-              params.setValue(newValue);
-            }}
-          />
+          <input type="checkbox" checked={params.value} />
           <span className="slider round"></span>
         </label>
       ),
